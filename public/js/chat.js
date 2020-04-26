@@ -8,8 +8,10 @@ document.querySelector('#subbtn').addEventListener('click',(e)=>{
     const message=(document.getElementById('message').value);
    
     
-    socket.emit('mssg',message,(message)=>{
-        console.log('message was delivered!',message)
+    socket.emit('mssg',message,(error)=>{
+        if(error)
+        return console.log(error);
+        console.log('Mesaage delivered')
     })
 })
 document.querySelector('#send-location').addEventListener('click',(e)=>{

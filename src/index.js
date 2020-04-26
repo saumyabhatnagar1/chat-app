@@ -2,6 +2,7 @@ const express=require('express');
 const path=require('path')
 const http=require('http');
 const socketio=require('socket.io');
+const Filter=require('bad-words')
 
 
 const app=express();
@@ -18,9 +19,13 @@ io.on('connection',(socket)=>{
     socket.broadcast.emit('message','A new user has joined')
 
     socket.on('mssg',(message,callback)=>{
-        
+
+        const filter=new Filter()
+        if(filter.isProfane(message))
+        //return callback('Profanity is not allowed')
+        message=filter.clean(message)
         io.emit('message',message)
-        callback('Delivered')
+        callback()
     })
     socket.on('disconnect',()=>{
         io.emit('message','A user has disconnected')
