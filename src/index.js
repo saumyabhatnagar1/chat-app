@@ -30,8 +30,10 @@ io.on('connection',(socket)=>{
     socket.on('disconnect',()=>{
         io.emit('message','A user has disconnected')
     })
-    socket.on('sendLocation',(latitude,longitude)=>{
-        io.emit('message',`https://maps.google.com?q=${latitude},${longitude}`)
+    socket.on('sendLocation',(latitude,longitude,callback)=>{
+
+        callback('Location Shared');
+        io.emit('locationMessage',`https://maps.google.com?q=${latitude},${longitude}`)
     })
 })
 
