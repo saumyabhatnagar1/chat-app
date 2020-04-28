@@ -3,7 +3,8 @@ const path=require('path')
 const http=require('http');
 const socketio=require('socket.io');
 const Filter=require('bad-words')
-
+const {generateMessage} =require('./utils/messages')
+const {generateLocationMessage}=require('./utils/Locationmssg')
 
 const app=express();
 const server=http.createServer(app)
@@ -15,8 +16,8 @@ app.use(express.static(publicDirectoryPath))
 let count=0;
 io.on('connection',(socket)=>{    
     console.log('new web socket io connection')
-    socket.emit('message','Welcome!')
-    socket.broadcast.emit('message','A new user has joined')
+    socket.emit('message',generateMessage('Welcome!'))
+    socket.broadcast.emit('message',generateMessage('A new user has joined'))
 
     socket.on('mssg',(message,callback)=>{
 
@@ -24,16 +25,16 @@ io.on('connection',(socket)=>{
         if(filter.isProfane(message))
         //return callback('Profanity is not allowed')
         message=filter.clean(message)
-        io.emit('message',message)
+        io.emit('message',generateMessage(message))
         callback()
     })
     socket.on('disconnect',()=>{
-        io.emit('message','A user has disconnected')
+        io.emit('message',generateMessage('A user has disconnected'))
     })
     socket.on('sendLocation',(latitude,longitude,callback)=>{
 
         callback('Location Shared');
-        io.emit('locationMessage',`https://maps.google.com?q=${latitude},${longitude}`)
+        io.emit('locationMessage',generateLocationMessage(`https://maps.google.com?q=${latitude},${longitude}`))
     })
 })
 

@@ -19,13 +19,13 @@
     <button id="send-location">Send Location</button>
     <script id="message-template" type="text/html">
         <div>
-            <p>{{message}}</p>
+            <p>{{createdAt}} - {{message}}</p>
         </div>
     </script>
     <script id="location-template" type="text/html">
     <div>
         <p>
-        <a target="_blank" href="{{mapsurl}}">My current Loaction</a>
+        <a target="_blank" href="{{mapsurl}}">{{createdAt}} - My current Loaction</a>
         </p>
     </div>
     </script>

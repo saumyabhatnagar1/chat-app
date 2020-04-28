@@ -6,7 +6,7 @@ const $messageFormButton=$messageForm.querySelector('button')
 const $locationButton=document.querySelector('#send-location');
 const $messages=document.querySelector('#messages')
 const $location=document.querySelector('#location');
-
+// const $submit=document.querySelector('#sbnbtn')
 //Templates
 const messageTemplate=document.querySelector('#message-template').innerHTML;
 const locationTemplate=document.querySelector('#location-template').innerHTML;
@@ -15,7 +15,8 @@ socket.on('message',(mssg)=>{
 
     console.log(mssg)
     const html=Mustache.render(messageTemplate,{
-        message:mssg
+        message:mssg.text,
+        createdAt:moment(message.createdAt).format('h:mm a')
     });
     $messages.insertAdjacentHTML('beforeend',html)
 })
@@ -24,12 +25,13 @@ socket.on('locationMessage',(mapsurl)=>{
 
     console.log(mapsurl)
     const html=Mustache.render(locationTemplate,{
-        mapsurl
+        mapsurl:mapsurl.url,
+        createdAt:moment(mapsurl.createdAt).format('h:mm a')
     });
     $location.insertAdjacentHTML('beforeend',html)
 })
 
-$messageForm.addEventListener('click',(e)=>{
+$messageFormButton.addEventListener('click',(e)=>{
     e.preventDefault();
     $messageFormButton.setAttribute('disabled','disabled')
     const message=(document.getElementById('message').value);
