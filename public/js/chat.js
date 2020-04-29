@@ -5,7 +5,6 @@ const $messageFormInput=$messageForm.querySelector('input');
 const $messageFormButton=$messageForm.querySelector('button')
 const $locationButton=document.querySelector('#send-location');
 const $messages=document.querySelector('#messages')
-const $location=document.querySelector('#location');
 // const $submit=document.querySelector('#sbnbtn')
 //Templates
 const messageTemplate=document.querySelector('#message-template').innerHTML;
@@ -28,7 +27,7 @@ socket.on('locationMessage',(mapsurl)=>{
         mapsurl:mapsurl.url,
         createdAt:moment(mapsurl.createdAt).format('h:mm a')
     });
-    $location.insertAdjacentHTML('beforeend',html)
+    $messages.insertAdjacentHTML('beforeend',html)
 })
 
 $messageFormButton.addEventListener('click',(e)=>{
