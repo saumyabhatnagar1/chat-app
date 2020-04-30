@@ -20,6 +20,11 @@ socket.on('message',(mssg)=>{
     $messages.insertAdjacentHTML('beforeend',html)
 })
 
+//options
+const {username,room}=Qs.parse(location.search,{ignoreQueryPrefix:true})
+
+
+
 socket.on('locationMessage',(mapsurl)=>{
 
     console.log(mapsurl)
@@ -58,3 +63,5 @@ document.querySelector('#send-location').addEventListener('click',(e)=>{
         })
     })
 })
+
+socket.emit('joinRoom',{username,room})
