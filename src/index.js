@@ -27,7 +27,10 @@ io.on('connection',(socket)=>{
         console.log('new web socket io connection')
         socket.emit('message',generateMessage(user.username,'Welcome!'))
         socket.broadcast.to(user.room).emit('message',generateMessage(user.username,`${user.username}, has joined`))
-
+        io.to(user.room).emit('roomData',{
+            room:room.user,
+            users:getUserRoom(user.room)
+        })
         callback();
     })
 
@@ -46,8 +49,14 @@ io.on('connection',(socket)=>{
     socket.on('disconnect',()=>{
         
         const user=removeUser(socket.id)
-        if(user)
-        io.to(user.room).emit('message',generateMessage(user.username,`${user.username} has disconnected`))
+        console.log(user)
+        if(user){
+            io.to(user.room).emit('message',generateMessage(user.username,`${user.username} has disconnected`))
+            io.to(user.room).emit('roomData',{
+                room:user.room,
+                users:getUserRoom(user.room)
+            })
+        }
     })
     socket.on('sendLocation',(latitude,longitude,callback)=>{
 

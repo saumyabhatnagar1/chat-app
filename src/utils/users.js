@@ -31,7 +31,7 @@ const removeUser=(id)=>{
         return user.id===id;
     })
 
-    if(index!==-1)
+    if(index!=-1)
     return users.slice(index,1)[0];
 }
 

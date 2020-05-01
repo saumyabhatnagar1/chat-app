@@ -9,7 +9,24 @@ const $messages=document.querySelector('#messages')
 //Templates
 const messageTemplate=document.querySelector('#message-template').innerHTML;
 const locationTemplate=document.querySelector('#location-template').innerHTML;
+const sidebarTemplate=document.querySelector('#sidebar-template').innerHTML
 
+
+const autoscroll=()=>{
+    const $newMessage=$messages.lastElementChild
+    const newMessageStyle=getComputedStyle($newMessage)
+    const newMessageMargin=parseInt(newMessageStyle.marginBottom)
+    const newMessageHeight=$newMessage.offsetHeight+newMessageMargin
+    const visibleHeight=$messages.offsetHeight;
+    const containerHeight=$messages.scrollHeight;
+    const scrollOffset=$messages.scrollTop+visibleHeight;
+
+    if(containerHeight-newMessageHeight<=scrollOffset){
+        $messages.scrollTop=$messages.scrollHeight
+
+    }
+
+}
 socket.on('message',(mssg)=>{
 
     console.log(mssg)
@@ -19,6 +36,7 @@ socket.on('message',(mssg)=>{
         createdAt:moment(message.createdAt).format('h:mm a')
     });
     $messages.insertAdjacentHTML('beforeend',html)
+    autoscroll();
 })
 
 //options
@@ -35,6 +53,7 @@ socket.on('locationMessage',(mapsurl)=>{
         createdAt:moment(mapsurl.createdAt).format('h:mm a')
     });
     $messages.insertAdjacentHTML('beforeend',html)
+    autoscroll()
 })
 
 $messageFormButton.addEventListener('click',(e)=>{
@@ -71,4 +90,13 @@ socket.emit('joinRoom',{username,room},(error)=>{
         alert(error);
         location.href='/';
     }
+})
+socket.on('roomData',({room,users})=>{
+
+    const html=Mustache.render(sidebarTemplate,{
+        room,
+        users
+    })
+    document.querySelector('#sidebar').innerHTML=html;
+    console.log(users,room)
 })
