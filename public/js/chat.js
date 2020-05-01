@@ -14,6 +14,7 @@ socket.on('message',(mssg)=>{
 
     console.log(mssg)
     const html=Mustache.render(messageTemplate,{
+        username:mssg.username,
         message:mssg.text,
         createdAt:moment(message.createdAt).format('h:mm a')
     });
@@ -29,6 +30,7 @@ socket.on('locationMessage',(mapsurl)=>{
 
     console.log(mapsurl)
     const html=Mustache.render(locationTemplate,{
+        username:mapsurl.username,
         mapsurl:mapsurl.url,
         createdAt:moment(mapsurl.createdAt).format('h:mm a')
     });
@@ -64,4 +66,9 @@ document.querySelector('#send-location').addEventListener('click',(e)=>{
     })
 })
 
-socket.emit('joinRoom',{username,room})
+socket.emit('joinRoom',{username,room},(error)=>{
+    if(error){
+        alert(error);
+        location.href='/';
+    }
+})

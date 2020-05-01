@@ -48,19 +48,6 @@ const getUserRoom=(room)=>{
     return users;
 }
 
-addUser({
-    id:13,
-    username:'saumya',
-    room:'ajmer'
-})
-
-addUser({
-    id:12,
-    username:'rashi',
-    room:'ajmer'
-})
-const user=getUser(13)
-const usersroom=getUserRoom('ajmer')
-console.log(usersroom)
-console.log(user)
-console.log(users)
+module.exports={
+    addUser,getUser,getUserRoom,removeUser
+}
