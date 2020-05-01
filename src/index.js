@@ -24,7 +24,7 @@ io.on('connection',(socket)=>{
            return callback(error)
         }
         socket.join(user.room)
-        console.log('new web socket io connection')
+        
         socket.emit('message',generateMessage(user.username,'Welcome!'))
         socket.broadcast.to(user.room).emit('message',generateMessage(user.username,`${user.username}, has joined`))
         io.to(user.room).emit('roomData',{
@@ -49,7 +49,6 @@ io.on('connection',(socket)=>{
     socket.on('disconnect',()=>{
         
         const user=removeUser(socket.id)
-        console.log(user)
         if(user){
             io.to(user.room).emit('message',generateMessage(user.username,`${user.username} has disconnected`))
             io.to(user.room).emit('roomData',{

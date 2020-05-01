@@ -46,7 +46,7 @@ const {username,room}=Qs.parse(location.search,{ignoreQueryPrefix:true})
 
 socket.on('locationMessage',(mapsurl)=>{
 
-    console.log(mapsurl)
+    
     const html=Mustache.render(locationTemplate,{
         username:mapsurl.username,
         mapsurl:mapsurl.url,
@@ -69,7 +69,7 @@ $messageFormButton.addEventListener('click',(e)=>{
         $messageFormInput.focus();
         if(error)
         return console.log(error);
-        console.log('Mesaage delivered')
+        
     })
 })
 document.querySelector('#send-location').addEventListener('click',(e)=>{
@@ -80,7 +80,6 @@ document.querySelector('#send-location').addEventListener('click',(e)=>{
     navigator.geolocation.getCurrentPosition((position)=>{
         $locationButton.removeAttribute('disabled')
         socket.emit('sendLocation',position.coords.latitude,position.coords.longitude,(mssg)=>{
-            console.log(mssg)
         })
     })
 })
@@ -98,5 +97,5 @@ socket.on('roomData',({room,users})=>{
         users
     })
     document.querySelector('#sidebar').innerHTML=html;
-    console.log(users,room)
+    
 })
